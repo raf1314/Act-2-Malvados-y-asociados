@@ -174,3 +174,37 @@ textarea {
         flex: 1;
     }
 }
+
+/* Indicador de tareas colapsadas */
+.more-tasks {
+    margin-top: 4px;
+    font-size: 11px;
+    text-align: center;
+    color: #555;
+    background: #eee;
+    border-radius: 4px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.more-tasks:hover {
+    background: #ddd;
+    
+}
+.day {
+    position: relative;
+    min-height: 120px;
+    overflow: hidden;
+    background: #fff;
+}
+
+/* Día expandido */
+.day.expanded {
+    z-index: 10;
+    overflow: visible;
+}
+
+/* Cuando un día está expandido, los demás quedan debajo */
+.calendar-grid {
+    position: relative;
+}
