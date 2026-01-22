@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Tareas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <div class="month-navigation">
+        <button id="prevMonth">&lt;</button>
+        <h1 id="currentMonth"></h1>
+        <button id="nextMonth">&gt;</button>
+    </div>
+
+    <div class="filters">
+        <input type="text" id="searchInput" placeholder="Buscar tarea">
+        <select id="statusFilter">
+            <option value="">Todos</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="completado">Completado</option>
+        </select>
+    </div>
+</header>
+
+<main class="calendar-container">
+    <div class="calendar-header">
+        <div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div><div>D</div>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+</main>
+
+<!-- MODAL -->
+<div class="task-modal hidden" id="taskModal">
+    <div class="modal-content">
+        <h2>Tarea</h2>
+
+        <form id="taskForm">
+            <input type="hidden" id="taskId">
+
+            <label>
+                Nombre
+                <input type="text" id="taskName" required>
+            </label>
+
+            <label>
+                Descripción
+                <textarea id="taskDescription"></textarea>
+            </label>
+
+            <label>
+                Fecha
+                <input type="date" id="taskDate" required>
+            </label>
+
+            <label>
+                Estado
+                <select id="taskStatus">
+                    <option value="pendiente">Pendiente</option>
+                    <option value="completado">Completado</option>
+                </select>
+            </label>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn-save">Guardar</button>
+                <button type="button" class="btn-delete" id="deleteTask">Eliminar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
