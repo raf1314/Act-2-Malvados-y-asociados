@@ -234,11 +234,13 @@ const calendar = new CalendarUI(taskManager);
 function openModal(task = {}) {
     modal.classList.remove("hidden"); // Muestra el modal
 
+    form.taskDate.value = task.date || form.taskDate.value || ""; //Guarda la fecha por el dia clickeado
+    form.taskDate.readOnly = true; //Bloquea la edicion manual
+
     // Rellena el formulario
     form.taskId.value = task.id || "";
     form.taskName.value = task.name || "";
     form.taskDescription.value = task.description || "";
-    form.taskDate.value = task.date || "";
     form.taskStatus.value = task.status || "pendiente";
 
     // Muestra botón eliminar solo si existe ID
