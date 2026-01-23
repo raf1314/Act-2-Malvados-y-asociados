@@ -5,8 +5,8 @@ class Task {
     // Constructor que recibe un objeto con las propiedades de la tarea
     constructor({ id, name, materia, description, hora, date, status }) {
         this.id = id || Date.now().toString(); // ID único (usa timestamp si no existe)
-        this.name = name;                      // Nombre de la tarea (obligatorio)
-        this.materia = materia;                // Materia asociada (obligatorio)
+        this.name = name;                      // Nombre de la tarea
+        this.materia = materia;                // Materia asociada (opcional)
         this.description = description;        // Descripción detallada
         this.hora = hora;                      // Hora de la tarea (opcional)
         this.date = date;                      // Fecha en formato YYYY-MM-DD
@@ -49,26 +49,16 @@ class TaskManager {
         this.save(); // Guarda cambios
     }
 
-    // Devuelve tareas filtradas por nombre, materia y estado
-    getFiltered(searchName, searchMateria, status) {
-    const qName = (searchName || "").toLowerCase().trim();
-    const qMat  = (searchMateria || "").toLowerCase().trim();
-
-    return this.tasks.filter(t => {
-        const name = (t.name || "").toLowerCase();
-        const mat  = (t.materia || "").toLowerCase();
-
-        // Si el input está vacío, no estorba
-        const matchName = !qName || name.includes(qName);
-        const matchMat  = !qMat  || mat.includes(qMat);
-
-        // Coincidencia por estado
-        const matchStatus = !status || t.status === status;
-
-        return matchName && matchMat && matchStatus;
-    });
-}
-
+    // Devuelve tareas filtradas por texto y estado
+    getFiltered(search, status) {
+        return this.tasks.filter(t => {
+            // Coincidencia por nombre (ignora mayúsculas)
+            const matchText = t.name.toLowerCase().includes(search.toLowerCase());
+            // Coincidencia por estado (si no hay filtro, acepta todos)
+            const matchStatus = !status || t.status === status;
+            return matchText && matchStatus; // Ambas condiciones deben cumplirse
+        });
+    }
 }
 
 /* ========= UI ========= */
@@ -84,7 +74,6 @@ class CalendarUI {
         this.calendarGrid = document.getElementById("calendarGrid");
         this.monthLabel = document.getElementById("currentMonth");
         this.searchInput = document.getElementById("searchInput");
-        this.searchMateria = document.getElementById("searchMateria");
         this.statusFilter = document.getElementById("statusFilter");
 
         this.bindEvents(); // Vincula eventos de la UI
@@ -110,9 +99,6 @@ class CalendarUI {
         // Filtro por texto
         this.searchInput.oninput = () => this.render();
 
-        // Filtro por materia
-        this.searchMateria.oninput = () => this.render();
-
         // Filtro por estado
         this.statusFilter.onchange = () => this.render();
     }
@@ -123,6 +109,10 @@ class CalendarUI {
 
         const year = this.currentDate.getFullYear(); // Año actual
         const month = this.currentDate.getMonth();   // Mes actual (0-11)
+
+        // Fecha REAL de hoy (sin hora para evitar errores)
+        const today = new Date();
+        const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
         // Muestra el nombre del mes y año
         this.monthLabel.textContent = this.currentDate.toLocaleDateString("es-MX", {
@@ -143,7 +133,6 @@ class CalendarUI {
         // Obtiene tareas filtradas
         const filteredTasks = this.taskManager.getFiltered(
             this.searchInput.value,
-            this.searchMateria.value,
             this.statusFilter.value
         );
 
@@ -155,6 +144,11 @@ class CalendarUI {
 
             const dayDiv = document.createElement("div");
             dayDiv.className = "day";
+
+            // ✅ MARCAR EL DÍA ACTUAL
+            if (dateStr === todayStr) {
+                dayDiv.classList.add("today");
+            }
 
             // Marca el día como expandido si aplica
             if (this.expandedDay === dateStr) {
@@ -180,7 +174,6 @@ class CalendarUI {
             tasksToShow.forEach(task => {
                 const taskDiv = document.createElement("div");
 
-                // Tamaño del post-it según cantidad
                 const sizeClass =
                     dayTasks.length === 1 ? "large" : "small";
 
@@ -189,7 +182,7 @@ class CalendarUI {
 
                 // Click para editar tarea
                 taskDiv.onclick = e => {
-                    e.stopPropagation(); // Evita abrir el modal del día
+                    e.stopPropagation();
                     openModal(task);
                 };
 
@@ -206,7 +199,7 @@ class CalendarUI {
 
                 moreDiv.onclick = e => {
                     e.stopPropagation();
-                    this.expandedDay = dateStr; // Expande el día
+                    this.expandedDay = dateStr;
                     this.render();
                 };
 
@@ -221,7 +214,7 @@ class CalendarUI {
 
                 lessDiv.onclick = e => {
                     e.stopPropagation();
-                    this.expandedDay = null; // Colapsa el día
+                    this.expandedDay = null;
                     this.render();
                 };
 
@@ -236,31 +229,25 @@ class CalendarUI {
 
 /* ========= MODAL ========= */
 
-// Referencias al modal y formulario
 const modal = document.getElementById("taskModal");
 const form = document.getElementById("taskForm");
 const deleteBtn = document.getElementById("deleteTask");
-const materiaInput = document.getElementById("taskMateria");
 
-// Inicializa gestor y UI
 const taskManager = new TaskManager();
 const calendar = new CalendarUI(taskManager);
 
 // Abre el modal para crear o editar tarea
 function openModal(task = {}) {
-    modal.classList.remove("hidden"); // Muestra el modal
+    modal.classList.remove("hidden");
 
-    form.taskDate.value = task.date || form.taskDate.value || ""; //Guarda la fecha por el dia clickeado
-    form.taskDate.readOnly = true; //Bloquea la edicion manual
+    form.taskDate.value = task.date || form.taskDate.value || "";
+    form.taskDate.readOnly = true;
 
-    // Rellena el formulario
     form.taskId.value = task.id || "";
     form.taskName.value = task.name || "";
-    materiaInput.value = task.materia || "";
     form.taskDescription.value = task.description || "";
     form.taskStatus.value = task.status || "pendiente";
 
-    // Muestra botón eliminar solo si existe ID
     deleteBtn.style.display = task.id ? "inline-block" : "none";
 }
 
@@ -271,24 +258,22 @@ modal.onclick = e => {
 
 // Envío del formulario
 form.onsubmit = e => {
-    e.preventDefault(); // Evita recargar la página
+    e.preventDefault();
 
     const task = new Task({
         id: form.taskId.value,
         name: form.taskName.value,
-        materia: materiaInput.value,
         description: form.taskDescription.value,
         date: form.taskDate.value,
         status: form.taskStatus.value
     });
 
-    // Decide si actualiza o crea
     form.taskId.value
         ? taskManager.update(task)
         : taskManager.add(task);
 
-    modal.classList.add("hidden"); // Cierra modal
-    calendar.render();             // Actualiza calendario
+    modal.classList.add("hidden");
+    calendar.render();
 };
 
 // Eliminación de tarea
@@ -297,4 +282,3 @@ deleteBtn.onclick = () => {
     modal.classList.add("hidden");
     calendar.render();
 };
-

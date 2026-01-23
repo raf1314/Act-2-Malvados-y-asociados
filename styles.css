@@ -1,20 +1,24 @@
+/* ================= RESET ================= */
 * {
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: "Inter", system-ui, sans-serif;
 }
 
+/* ================= THEME CLARO ================= */
 body {
-    background: #f4f4f4;
-    padding: 15px;
+    margin: 0;
+    padding: 16px;
+    background: #f4f6fb;
+    color: #2b2b2b;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 .top-bar {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .month-navigation {
@@ -23,16 +27,47 @@ body {
     gap: 10px;
 }
 
-.filters {
-    display: flex;
-    gap: 10px;
+.month-navigation h1 {
+    text-transform: capitalize;
+    font-size: 1.4rem;
 }
 
-/* CALENDARIO */
+.month-navigation button {
+    background: #ffffff;
+    border: 1px solid #dcdfe8;
+    border-radius: 10px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.month-navigation button:hover {
+    background: #eef1ff;
+}
+
+/* ================= FILTERS ================= */
+.filters {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    width: auto;
+}
+
+.filters input {
+    width: 260px;
+}
+
+.filters select {
+    width: 130px;
+}
+
+/* ================= CALENDAR ================= */
 .calendar-container {
     background: white;
-    padding: 10px;
-    border-radius: 6px;
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
 }
 
 .calendar-header,
@@ -43,71 +78,111 @@ body {
 
 .calendar-header div {
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: .8rem;
+    color: #6b7280;
 }
 
+/* ================= GRID ================= */
 .calendar-grid {
-    grid-auto-rows: 110px;
-    gap: 5px;
+    gap: 8px;
+    grid-auto-rows: 140px;
 }
 
+/* ================= DAY ================= */
 .day {
-    border: 1px solid #ddd;
-    padding: 4px;
-    cursor: pointer;
-}
-
-.day-number {
-    font-size: 12px;
-    color: #555;
-}
-
-/* TAREAS */
-.task {
-    border-radius: 6px;
+    position: relative;
+    background: #fafbff;
+    border-radius: 14px;
     padding: 6px;
-    font-size: 11px;
     cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
-    transition: transform 0.1s ease;
-}
-
-.task.large {
-    height: 65px;
-    font-size: 13px;
-    font-weight: bold;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    overflow-y: auto;
 }
 
-.task.small {
-    height: 28px;
-    font-size: 11px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.day::-webkit-scrollbar {
+    width: 6px;
 }
 
-.task:hover {
-    transform: scale(1.03);
+.day::-webkit-scrollbar-thumb {
+    background: #d0d6ff;
+    border-radius: 6px;
+}
+
+/* ================= DÍA ACTUAL ================= */
+.day.today {
+    border: 1.5px solid #4b6cff;
+    background: #eef2ff;
+    box-shadow: 0 0 0 2px rgba(75,108,255,.18), 0 6px 14px rgba(75,108,255,.22);
+    transform: scale(1.015);
+    z-index: 2;
+}
+
+.day.today .day-number {
+    color: #4b6cff;
+    font-weight: 800;
+}
+
+/* ================= DAY NUMBER ================= */
+.day-number {
+    font-size: .75rem;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+/* ================= POST-ITS ================= */
+.task {
+    background: #fff2a8;
+    color: #2b2b2b;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: .75rem;
+    margin-bottom: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,.12);
 }
 
 .task.pendiente {
-    background: #ffd9f3;
+    background: #fff2a8;
 }
 
 .task.completado {
-    background: #a5d6a7;
+    background: #c7f0d4;
+    text-decoration: none;
+    color: #2f6f4f;
 }
 
-/* MODAL */
+.task.completado::before {
+    content: "✔ ";
+    font-weight: bold;
+}
+
+/* ================= MORE / LESS ================= */
+.more-tasks,
+.less-tasks {
+    background: #eef1ff;
+    font-size: .7rem;
+    padding: 4px;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   AQUÍ COMIENZA LA MEJORA DE DISTRIBUCIÓN DE LA VENTANA EMERGENTE (MODAL)
+   ========================================================================== */
+
 .task-modal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.3);
+    background: rgba(0,0,0,0.5); /* Un poco más oscuro para enfocar la atención */
+    backdrop-filter: blur(2px);   /* Efecto de desenfoque suave en el fondo */
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1000;
 }
 
 .task-modal.hidden {
@@ -115,111 +190,104 @@ body {
 }
 
 .modal-content {
-    background: #ffd9f3;
-    padding: 20px;
-    width: 100%;
-    max-width: 400px;
-    border-radius: 6px;
+    background: white;
+    /* MEJORA: Más espacio interno para que respire */
+    padding: 30px 35px; 
+    width: 90%;
+    /* MEJORA: Un poco más ancho para mejor lectura */
+    max-width: 460px;   
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-/* FORM */
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-size: 1.5rem;
+    color: #111827;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 1px; /* menos espacio entre cada campo */
+}
+
+
+/* ================= INPUTS Y LABELS MEJORADOS ================= */
 label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px; /* Un poco más de aire con el input */
     display: block;
-    margin-bottom: 10px;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    /* MEJORA: Inputs más "altos" para escribir cómodo */
+    padding: 12px 16px; 
+    border-radius: 12px;
     width: 100%;
-    padding: 6px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+/* Efecto al hacer click */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #6c8cff;
+    box-shadow: 0 0 0 4px rgba(108, 140, 255, 0.15);
 }
 
 textarea {
     resize: none;
-    height: 60px;
+    height: 90px; /* Altura optimizada */
 }
 
-/* 2 campos en una misma fila (Materia / Fecha de entrega) */
-.row-2 {
-    display: flex;
-    gap: 12px;
-}
-
-.row-2 label {
-    flex: 1;
-}
-
+/* ================= BOTONES MEJORADOS ================= */
 .modal-actions {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
+    /* MEJORA: Separación clara del formulario */
+    margin-top: 25px; 
 }
 
-/* BOTONES */
 .btn-save {
-    background: #3b6ee0;
-    color: white;
+    background: #4f46e5; /* Azul moderno */
     border: none;
-    padding: 6px 12px;
+    padding: 12px 40px;   /* Botón ancho */
+    border-radius: 50px;  /* Forma de cápsula completa */
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    transition: transform 0.1s;
+}
+
+.btn-save:active {
+    transform: scale(0.98);
 }
 
 .btn-delete {
-    background: #b52a2a;
-    color: white;
+    background: #fee2e2;
+    color: #dc2626;
     border: none;
-    padding: 6px 12px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 600px) {
-    .calendar-grid {
-        grid-auto-rows: 90px;
-    }
-
-    .filters {
-        width: 100%;
-    }
-
-    .filters input,
-    .filters select {
-        flex: 1;
-    }
-
-    .row-2 {
-        flex-direction: column;
-        gap: 0;
-    }
-}
-
-/* Indicador de tareas colapsadas */
-.more-tasks {
-    margin-top: 4px;
-    font-size: 11px;
-    text-align: center;
-    color: #555;
-    background: #eee;
-    border-radius: 4px;
-    padding: 3px;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
-.more-tasks:hover {
-    background: #ddd;
-    
-}
-.day {
-    position: relative;
-    min-height: 120px;
-    overflow: hidden;
-    background: #fff;
-}
-
-/* Día expandido */
-.day.expanded {
-    z-index: 10;
-    overflow: visible;
-}
-
-/* Cuando un día está expandido, los demás quedan debajo */
-.calendar-grid {
-    position: relative;
+.btn-delete:hover {
+    background: #fecaca;
 }
