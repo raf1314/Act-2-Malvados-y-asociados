@@ -4,13 +4,12 @@
 class Task {
     // Constructor que recibe un objeto con las propiedades de la tarea
     constructor({ id, name, materia, description, hora, date, status }) {
-        this.id = id || Date.now().toString(); // ID único (usa timestamp si no existe)
+        this.id = id || Date.now().toString(); // ID único
         this.name = name;                      // Nombre de la tarea
         this.materia = materia;                // Materia asociada (opcional)
         this.description = description;        // Descripción detallada
-        this.hora = hora;                      // Hora de la tarea (opcional)
         this.date = date;                      // Fecha en formato YYYY-MM-DD
-        this.status = status;                  // Estado (pendiente, completado, etc.)
+        this.status = status;                  // Estado (pendiente, completado)
     }
 }
 
