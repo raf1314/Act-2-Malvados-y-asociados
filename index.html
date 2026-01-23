@@ -50,10 +50,17 @@
                 <textarea id="taskDescription"></textarea>
             </label>
 
-            <label>
-                Fecha
-                <input type="date" id="taskDate" readonly>
-            </label>
+            <div class="row-2">
+                <label>
+                    Materia
+                    <input type="text" id="taskMateria" placeholder="Ej. Ecología" required/>
+                </label>
+
+                <label>
+                    Fecha de entrega
+                    <input type="date" id="taskDate" readonly>
+                </label>
+            </div>
 
             <label>
                 Estado
@@ -64,7 +71,7 @@
             </label>
 
             <div class="modal-actions">
-                <button type="submit" class="btn-save">Guardar</button>
+                <button type="submit" class="btn-save">Guardar Cambios</button>
                 <button type="button" class="btn-delete" id="deleteTask">Eliminar</button>
             </div>
         </form>

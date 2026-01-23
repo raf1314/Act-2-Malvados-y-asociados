@@ -53,7 +53,10 @@ class TaskManager {
     getFiltered(search, status) {
         return this.tasks.filter(t => {
             // Coincidencia por nombre (ignora mayúsculas)
-            const matchText = t.name.toLowerCase().includes(search.toLowerCase());
+            const q = search.toLowerCase();
+            const matchText =
+                (t.name || "").toLowerCase().includes(q) ||
+                (t.materia || "").toLowerCase().includes(q);
             // Coincidencia por estado (si no hay filtro, acepta todos)
             const matchStatus = !status || t.status === status;
             return matchText && matchStatus; // Ambas condiciones deben cumplirse
@@ -225,6 +228,7 @@ class CalendarUI {
 const modal = document.getElementById("taskModal");
 const form = document.getElementById("taskForm");
 const deleteBtn = document.getElementById("deleteTask");
+const materiaInput = document.getElementById("taskMateria");
 
 // Inicializa gestor y UI
 const taskManager = new TaskManager();
@@ -240,6 +244,7 @@ function openModal(task = {}) {
     // Rellena el formulario
     form.taskId.value = task.id || "";
     form.taskName.value = task.name || "";
+    materiaInput.value = task.materia || "";
     form.taskDescription.value = task.description || "";
     form.taskStatus.value = task.status || "pendiente";
 
@@ -259,6 +264,7 @@ form.onsubmit = e => {
     const task = new Task({
         id: form.taskId.value,
         name: form.taskName.value,
+        materia: materiaInput.value,
         description: form.taskDescription.value,
         date: form.taskDate.value,
         status: form.taskStatus.value
