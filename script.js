@@ -240,15 +240,19 @@ const calendar = new CalendarUI(taskManager);
 function openModal(task = {}) {
     modal.classList.remove("hidden");
 
-    form.taskDate.value = task.date || form.taskDate.value || "";
-    form.taskDate.readOnly = true;
+    const isEditing = !!task.id; // true si existe id
+    const taskDateInput = form.taskDate;
+
+    // Fecha: fija al crear, editable al editar
+    taskDateInput.value = task.date || "";
+    taskDateInput.readOnly = !isEditing;
 
     form.taskId.value = task.id || "";
     form.taskName.value = task.name || "";
     form.taskDescription.value = task.description || "";
     form.taskStatus.value = task.status || "pendiente";
 
-    deleteBtn.style.display = task.id ? "inline-block" : "none";
+    deleteBtn.style.display = isEditing ? "inline-block" : "none";
 }
 
 // Cierra el modal al hacer click fuera
