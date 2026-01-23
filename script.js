@@ -5,8 +5,8 @@ class Task {
     // Constructor que recibe un objeto con las propiedades de la tarea
     constructor({ id, name, materia, description, hora, date, status }) {
         this.id = id || Date.now().toString(); // ID único (usa timestamp si no existe)
-        this.name = name;                      // Nombre de la tarea
-        this.materia = materia;                // Materia asociada (opcional)
+        this.name = name;                      // Nombre de la tarea (obligatorio)
+        this.materia = materia;                // Materia asociada (obligatorio)
         this.description = description;        // Descripción detallada
         this.hora = hora;                      // Hora de la tarea (opcional)
         this.date = date;                      // Fecha en formato YYYY-MM-DD
@@ -49,19 +49,26 @@ class TaskManager {
         this.save(); // Guarda cambios
     }
 
-    // Devuelve tareas filtradas por texto y estado
-    getFiltered(search, status) {
-        return this.tasks.filter(t => {
-            // Coincidencia por nombre (ignora mayúsculas)
-            const q = search.toLowerCase();
-            const matchText =
-                (t.name || "").toLowerCase().includes(q) ||
-                (t.materia || "").toLowerCase().includes(q);
-            // Coincidencia por estado (si no hay filtro, acepta todos)
-            const matchStatus = !status || t.status === status;
-            return matchText && matchStatus; // Ambas condiciones deben cumplirse
-        });
-    }
+    // Devuelve tareas filtradas por nombre, materia y estado
+    getFiltered(searchName, searchMateria, status) {
+    const qName = (searchName || "").toLowerCase().trim();
+    const qMat  = (searchMateria || "").toLowerCase().trim();
+
+    return this.tasks.filter(t => {
+        const name = (t.name || "").toLowerCase();
+        const mat  = (t.materia || "").toLowerCase();
+
+        // Si el input está vacío, no estorba
+        const matchName = !qName || name.includes(qName);
+        const matchMat  = !qMat  || mat.includes(qMat);
+
+        // Coincidencia por estado
+        const matchStatus = !status || t.status === status;
+
+        return matchName && matchMat && matchStatus;
+    });
+}
+
 }
 
 /* ========= UI ========= */
@@ -77,6 +84,7 @@ class CalendarUI {
         this.calendarGrid = document.getElementById("calendarGrid");
         this.monthLabel = document.getElementById("currentMonth");
         this.searchInput = document.getElementById("searchInput");
+        this.searchMateria = document.getElementById("searchMateria");
         this.statusFilter = document.getElementById("statusFilter");
 
         this.bindEvents(); // Vincula eventos de la UI
@@ -101,6 +109,9 @@ class CalendarUI {
 
         // Filtro por texto
         this.searchInput.oninput = () => this.render();
+
+        // Filtro por materia
+        this.searchMateria.oninput = () => this.render();
 
         // Filtro por estado
         this.statusFilter.onchange = () => this.render();
@@ -132,6 +143,7 @@ class CalendarUI {
         // Obtiene tareas filtradas
         const filteredTasks = this.taskManager.getFiltered(
             this.searchInput.value,
+            this.searchMateria.value,
             this.statusFilter.value
         );
 
