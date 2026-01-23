@@ -51,14 +51,19 @@ class TaskManager {
 
     // Devuelve tareas filtradas por texto y estado
     getFiltered(search, status) {
+        const searchLower = search.toLowerCase();
+
         return this.tasks.filter(t => {
-            // Coincidencia por nombre (ignora mayúsculas)
-            const matchText = t.name.toLowerCase().includes(search.toLowerCase());
-            // Coincidencia por estado (si no hay filtro, acepta todos)
+            const matchText =
+                t.name.toLowerCase().includes(searchLower) ||
+                (t.materia && t.materia.toLowerCase().includes(searchLower));
+
             const matchStatus = !status || t.status === status;
-            return matchText && matchStatus; // Ambas condiciones deben cumplirse
+
+            return matchText && matchStatus;
         });
     }
+
 }
 
 /* ========= UI ========= */
@@ -247,6 +252,10 @@ function openModal(task = {}) {
     taskDateInput.value = task.date || "";
     taskDateInput.readOnly = !isEditing;
 
+    //Materia: editable al crear, fia al editar
+    form.taskMateria.value = task.materia || "";
+    form.taskMateria.readOnly = isEditing;
+
     form.taskId.value = task.id || "";
     form.taskName.value = task.name || "";
     form.taskDescription.value = task.description || "";
@@ -267,6 +276,7 @@ form.onsubmit = e => {
     const task = new Task({
         id: form.taskId.value,
         name: form.taskName.value,
+        materia: form.taskMateria.value,
         description: form.taskDescription.value,
         date: form.taskDate.value,
         status: form.taskStatus.value
