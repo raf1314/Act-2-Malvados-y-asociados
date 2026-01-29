@@ -2,6 +2,7 @@
   "name": "act-2-fullstack",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "script.js",
   "scripts": {
     "start": "node server.js",
@@ -9,19 +10,22 @@
     "dev": "node --inspect server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
+    "repository": {
     "type": "git",
     "url": "git+https://github.com/raf1314/Act-2-Fullstack.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
+  
   "bugs": {
     "url": "https://github.com/raf1314/Act-2-Fullstack/issues"
   },
   "homepage": "https://github.com/raf1314/Act-2-Fullstack#readme",
   "dependencies": {
-    "express": "^4.22.1"
-  }
+    "bcryptjs": "^3.0.3",
+    "express": "^4.22.1",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {}
 }

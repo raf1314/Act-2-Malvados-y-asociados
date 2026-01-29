@@ -5,7 +5,9 @@
     "materia": "Ecologia",
     "description": "",
     "date": "2026-01-30",
-    "status": "pendiente"
+    "status": "pendiente",
+    "profesor": "",
+    "hora": "21:00"
   },
   {
     "id": "1769702454777",
@@ -13,7 +15,9 @@
     "materia": "Matematicas",
     "description": "",
     "date": "2026-01-29",
-    "status": "completado"
+    "status": "completado",
+    "profesor": "",
+    "hora": "23:00"
   },
   {
     "id": "1769703832606",
@@ -21,6 +25,18 @@
     "materia": "Matematicas",
     "description": "",
     "date": "2026-01-31",
-    "status": "pendiente"
+    "status": "pendiente",
+    "profesor": "",
+    "hora": "20:35"
+  },
+  {
+    "id": "1769707199242",
+    "name": "Actividad 1",
+    "materia": "Matematicas",
+    "description": "",
+    "date": "2026-01-29",
+    "status": "pendiente",
+    "profesor": "Chespitito",
+    "hora": "23:59"
   }
 ]

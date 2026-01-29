@@ -16,13 +16,71 @@ body {
 
 /* ===== BARRA SUPERIOR ===== */
 /* Contenedor principal del header */
-.top-bar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 16px;
+.top-bar{
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
+
+/* Mes + flechas a la izquierda */
+.month-navigation{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===== TOP BAR ===== */
+.top-bar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* izquierda / derecha */
+  gap: 16px;
+}
+
+/* Grupo derecho: filtros + cerrar sesión juntos */
+.actions{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* filtros (buscador + select) */
+.filters{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Tamaños */
+.filters input{
+  width: 420px;
+}
+
+.filters select{
+  width: 160px;
+}
+
+/* logout sin margin auto para que no se vaya solo */
+.logout{
+  display: flex;
+  align-items: center;
+}
+
+/* Botón rojo */
+#logoutBtn{
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#logoutBtn:hover{
+  background: #b91c1c;
+}
+
 
 /* Navegación de mes */
 .month-navigation {
@@ -50,21 +108,7 @@ body {
     background: #eef1ff;
 }
 
-/* ===== FILTROS ===== */
-/* Buscador y select de estado */
-.filters {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
 
-.filters input {
-    width: 400px;
-}
-
-.filters select {
-    width: 160px;
-}
 
 /* ===== CONTENEDOR DEL CALENDARIO ===== */
 /* Tarjeta principal del calendario */
@@ -302,4 +346,57 @@ textarea {
 
 .btn-delete:hover {
     background: #fecaca;
+}
+/* ===== CENTRADO DEL LOGIN ===== */
+.login-body {
+  min-height: 100vh;
+  margin: 0;
+  background: #f5f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: system-ui, Arial, sans-serif;
+}
+
+/* Contenedor que centra todo */
+.login-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Tarjeta del login */
+.login-container {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Inputs más elegantes y alineados */
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #cfd4dc;
+  margin-top: 4px;
+}
+
+/* Botón centrado */
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 16px;
+  border-radius: 8px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background: #1e40af;
 }

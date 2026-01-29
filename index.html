@@ -15,15 +15,23 @@
         <button id="nextMonth">&gt;</button>
     </div>
 
-    <div class="filters">
-        <input type="text" id="searchInput" placeholder="Buscar materia o tarea">
-        <select id="statusFilter">
-            <option value="">Todos</option>
-            <option value="pendiente">Pendiente</option>
-            <option value="completado">Completado</option>
-        </select>
-    </div>
+    <div class="actions">
+  <div class="filters">
+      <input type="text" id="searchInput" placeholder="Buscar materia o tarea">
+      <select id="statusFilter">
+          <option value="">Todos</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="completado">Completado</option>
+      </select>
+  </div>
+
+  <div class="logout">
+      <button id="logoutBtn" type="button">Cerrar sesión</button>
+  </div>
+</div>
+
 </header>
+
 
 <main class="calendar-container">
     <div class="calendar-header">

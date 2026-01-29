@@ -1,6 +1,11 @@
-const express = require('express');
-const fs = require('fs').promises;
-const path = require('path');
+import express from 'express';
+import fs from 'fs/promises'; // Nota que aquí usamos fs/promises directamente
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const PORT = 3000;
 
@@ -8,6 +13,15 @@ const DATA_FILE = path.join(__dirname, 'data/tasks.json');
 
 app.use(express.json());
 app.use(express.static(__dirname)); // Sirve tus archivos HTML/JS actuales
+
+// Rutas
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "home.html"));
+});
+
+app.get("/calendario", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
 
 // Leer tareas del JSON
 app.get('/api/tasks', async (req, res) => {
@@ -33,3 +47,6 @@ app.post('/api/tasks', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+
+

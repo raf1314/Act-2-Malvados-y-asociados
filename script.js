@@ -310,3 +310,11 @@ async function promise(asyncOperation) {
         await calendar.render();
     };
 })();
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    window.location.href = "/home.html"; // vuelve a home.html
+  });
+}
