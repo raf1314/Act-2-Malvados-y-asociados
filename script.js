@@ -3,13 +3,15 @@
 // Clase que representa una tarea individual
 class Task {
     // Constructor que recibe un objeto con las propiedades de la tarea
-    constructor({ id, name, materia, description, hora, date, status }) {
+    constructor({ id, name, materia, description, hora, date, status, profesor }) {
         this.id = id || Date.now().toString(); // ID único
         this.name = name;                      // Nombre de la tarea
         this.materia = materia;                // Materia asociada (opcional)
         this.description = description;        // Descripción detallada
         this.date = date;                      // Fecha en formato YYYY-MM-DD
         this.status = status;                  // Estado (pendiente, completado)
+        this.profesor= profesor;               // Para agregar al profesor como campo (nuevo)
+        this.hora=hora                         // Campo para agregar las horas (Nuevo)
     }
 }
 
@@ -231,6 +233,10 @@ function openModal(task = {}) {
     form.taskMateria.value = task.materia || "";
     form.taskMateria.readOnly = isEditing;
 
+    form.taskProfesor.value = task.profesor || ""; //Nuevo para el profeosr
+
+    form.taskHora.value = task.hora || "";  //Para las Horas
+
     form.taskId.value = task.id || "";
     form.taskName.value = task.name || "";
     form.taskDescription.value = task.description || "";
@@ -277,8 +283,10 @@ function promise(asyncOperation) {
             id: form.taskId.value,
             name: form.taskName.value,
             materia: form.taskMateria.value,
+            profesor: form.taskProfesor.value, // Para el profesor
             description: form.taskDescription.value,
             date: form.taskDate.value,
+            hora: form.taskHora.value,         // Para las horas
             status: form.taskStatus.value
         };
 
