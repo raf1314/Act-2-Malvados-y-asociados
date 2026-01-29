@@ -58,8 +58,12 @@ class TaskManager {
 
     // Actualiza una tarea existente
     async update(task) {
-        this.tasks = this.tasks.filter(t => t.id !== task.id);
-        this.tasks.push(task);
+            const index = this.tasks.findIndex(t => t.id === task.id);
+        if (index !== -1) {
+            this.tasks[index] = task;
+        } else {
+            this.tasks.push(task);
+        }
         await this.save();
     }
 
@@ -244,18 +248,13 @@ modal.onclick = e => {
 };
 
 // Función promise que envuelve una operación asíncrona
-function promise(asyncOperation) {
-    return new Promise((resolve, reject) => {
-        // Simula una operación asíncrona que puede tener éxito o fallar
-        setTimeout(() => {
-            try {
-                const result = asyncOperation();
-                resolve(result);
-            } catch (error) {
-                reject(error);
-            }
-        }, 500); // Simula un retraso de 500ms
-    });
+async function promise(asyncOperation) {
+    try {
+        const result = await asyncOperation(); 
+        return result;
+    } catch (error) {
+        throw error;
+    }
 }
 
 
@@ -289,7 +288,7 @@ function promise(asyncOperation) {
             : taskManager.add(task);
 
         await promise(operation);
-
+        form.reset();
         modal.classList.add("hidden");
         await calendar.render();
     };

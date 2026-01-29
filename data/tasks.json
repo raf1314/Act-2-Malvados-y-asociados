@@ -9,10 +9,18 @@
   },
   {
     "id": "1769702454777",
-    "name": "Tarea 1",
+    "name": "Tarea 25",
     "materia": "Matematicas",
     "description": "",
     "date": "2026-01-29",
     "status": "completado"
+  },
+  {
+    "id": "1769703832606",
+    "name": "Act1 mate",
+    "materia": "Matematicas",
+    "description": "",
+    "date": "2026-01-31",
+    "status": "pendiente"
   }
 ]
