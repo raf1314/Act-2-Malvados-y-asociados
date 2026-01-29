@@ -4,7 +4,7 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "star": "node server.js",
+    "start": "node server.js",
     "_comment": "dev -- permite el requisito de debbuging",
     "dev": "node --inspect server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,8 +22,6 @@
   },
   "homepage": "https://github.com/raf1314/Act-2-Fullstack#readme",
   "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3"
+    "express": "^4.22.1"
   }
 }

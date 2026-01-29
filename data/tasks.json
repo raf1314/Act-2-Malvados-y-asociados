@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1769702476924",
+    "name": "Actividad 4",
+    "materia": "Ecologia",
+    "description": "",
+    "date": "2026-01-30",
+    "status": "pendiente"
+  },
+  {
+    "id": "1769702454777",
+    "name": "Tarea 1",
+    "materia": "Matematicas",
+    "description": "",
+    "date": "2026-01-29",
+    "status": "completado"
+  }
+]
