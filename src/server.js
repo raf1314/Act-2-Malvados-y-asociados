@@ -12,8 +12,8 @@ const app = express();
 const PORT = 3000;
 const SECRET_KEY = "tu_clave_secreta_super_segura";
 
-const DATA_FILE = path.join(__dirname, 'data/tasks.json');
-const USERS_FILE = path.join(__dirname, 'data/users.json');
+const DATA_FILE = path.join(__dirname, '../data/tasks.json');
+const USERS_FILE = path.join(__dirname, '../data/users.json');
 
 // --- MIDDLEWARES GLOBALES ---
 app.use(express.json());
@@ -82,7 +82,6 @@ app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
     try {
         const data = await fs.readFile(USERS_FILE, 'utf8');
-        console.log(`Login exitoso: ${username}`);
         const users = JSON.parse(data || '[]');
         const user = users.find(u => u.username === username);
 

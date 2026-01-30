@@ -31,5 +31,16 @@
     "profesor": "",
     "hora": "23:00",
     "owner": "Luna"
+  },
+  {
+    "id": "1769792335252",
+    "name": "Actividad 4",
+    "materia": "Matematicas",
+    "description": "",
+    "date": "2026-02-09",
+    "status": "pendiente",
+    "profesor": "",
+    "hora": "22:58",
+    "owner": "Rafael"
   }
 ]
