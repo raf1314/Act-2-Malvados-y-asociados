@@ -1,46 +1,13 @@
 [
   {
-    "id": "1769783154415",
-    "name": "Act1 mate",
+    "id": "1769799414158",
+    "name": "Actividad 1",
     "materia": "Matematicas",
     "description": "",
-    "date": "2026-01-31",
+    "date": "2026-01-30",
     "status": "pendiente",
     "profesor": "",
-    "hora": "",
+    "hora": "12:00",
     "owner": "admin"
-  },
-  {
-    "id": "1769786617143",
-    "name": "Actividad 1",
-    "materia": "Matematicas",
-    "description": "",
-    "date": "2026-01-30",
-    "status": "pendiente",
-    "profesor": "",
-    "hora": "",
-    "owner": "Racoth"
-  },
-  {
-    "id": "1769790882174",
-    "name": "Actividad 1",
-    "materia": "Matematicas",
-    "description": "",
-    "date": "2026-01-30",
-    "status": "pendiente",
-    "profesor": "",
-    "hora": "23:00",
-    "owner": "Luna"
-  },
-  {
-    "id": "1769792335252",
-    "name": "Actividad 4",
-    "materia": "Matematicas",
-    "description": "",
-    "date": "2026-02-09",
-    "status": "pendiente",
-    "profesor": "",
-    "hora": "22:58",
-    "owner": "Rafael"
   }
 ]

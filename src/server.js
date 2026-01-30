@@ -101,11 +101,17 @@ app.post('/api/login', async (req, res) => {
 
 // 1. OBTENER TODAS LAS TAREAS
 app.get('/api/tasks', authenticateToken, async (req, res) => {
-    try {
+try {
         const data = await fs.readFile(DATA_FILE, 'utf8');
+        const tasks = JSON.parse(data || '[]'); // Primero definimos la variable
+        
         console.log(`Enviando ${tasks.length} tareas a ${req.user.username}`);
-        res.json(JSON.parse(data || '[]'));
-    } catch (error) { res.json([]); }
+        
+        res.json(tasks); // Ahora sí la enviamos
+    } catch (error) { 
+        console.error("Error al leer archivo de tareas:", error);
+        res.json([]); 
+    }
 });
 
 // 2. CREAR TAREA (POST)

@@ -28,17 +28,25 @@ class TaskManager {
         this.tasks = [];
     }
 
-    async init() {
+async init() {
         try {
+            // RE-CAPTURAR los datos actuales del storage
+            const currentUser = sessionStorage.getItem("currentUser");
+            const currentToken = sessionStorage.getItem("token");
+
             const response = await fetch('/api/tasks', {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { 'Authorization': `Bearer ${currentToken}` }
             });
 
             if (!response.ok) throw new Error("Sesión expirada");
 
             const allTasks = await response.json();
-            // Filtramos localmente para mostrar solo lo del usuario actual
-            this.tasks = allTasks.filter(t => t.owner === userLogueado);
+            
+            // FILTRO CRÍTICO: Asegúrate de que t.owner coincida exactamente
+            // Agregamos un console.log para depurar en el navegador
+            this.tasks = allTasks.filter(t => t.owner === currentUser);
+            
+            console.log(`Tareas cargadas para ${currentUser}:`, this.tasks.length);
         } catch (error) {
             console.error("Error al cargar:", error);
             sessionStorage.clear();
