@@ -1,5 +1,11 @@
 /* ========= MODELO ========= */
 
+// Al inicio de script.js
+const userLogueado = sessionStorage.getItem("currentUser");
+if (!userLogueado) {
+    window.location.href = "/home.html"; // O el nombre de tu archivo de login
+}
+
 // Clase que representa una tarea individual
 class Task {
     // Constructor que recibe un objeto con las propiedades de la tarea
@@ -25,28 +31,45 @@ class TaskManager {
 
     // Carga las tareas iniciales desde el servidor
     async init() {
+        const token = sessionStorage.getItem("token");
+        const currentUser = sessionStorage.getItem("currentUser");
+
         try {
-            const response = await fetch('/api/tasks');
-            if (!response.ok) {
-                throw new Error('No se pudieron cargar las tareas.');
-            }
-            this.tasks = await response.json();
+            const response = await fetch('/api/tasks', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (!response.ok) throw new Error("Sesión expirada");
+
+            const allTasks = await response.json();
+            // Filtramos por el campo 'owner' que agregaremos ahora
+            this.tasks = allTasks.filter(t => t.owner === currentUser);
+            
         } catch (error) {
-            console.error(error);
-            this.tasks = []; // En caso de error, empieza con un arreglo vacío
+            console.error("Error al cargar:", error);
+            window.location.href = "/home.html"; // Redirigir si falla la autenticación
         }
     }
 
     // Guarda las tareas actuales en el servidor
     async save() {
+        const token = sessionStorage.getItem("token"); // Obtenemos el token guardado al loguearnos
+
         try {
-            await fetch('/api/tasks', {
+            const response = await fetch('/api/tasks', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // <--- ESTO ES LO QUE FALTA
                 },
                 body: JSON.stringify(this.tasks),
             });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error del servidor:", errorData.error);
+                alert("No tienes permiso para guardar o tu sesión expiró.");
+            }
         } catch (error) {
             console.error('Error al guardar las tareas:', error);
         }
@@ -286,6 +309,7 @@ async function promise(asyncOperation) {
             description: form.taskDescription.value,
             date: form.taskDate.value,
             hora: form.taskHora.value,         // Para las horas
+            owner: sessionStorage.getItem("currentUser"),
             status: form.taskStatus.value
         };
 
@@ -311,10 +335,25 @@ async function promise(asyncOperation) {
     };
 })();
 
-const logoutBtn = document.getElementById("logoutBtn");
+// --- Lógica de Usuario y Seguridad ---
+const currentUser = sessionStorage.getItem("currentUser");
 
+// 1. Si no hay usuario, expulsar al login
+if (!currentUser) {
+    window.location.href = "/home.html";
+}
+
+// 2. Mostrar saludo
+const userDisplay = document.getElementById("userDisplay");
+if (userDisplay) {
+    userDisplay.textContent = `Hola, ${currentUser}`;
+}
+
+// 3. Configurar el botón de cerrar sesión
+const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    window.location.href = "/home.html"; // vuelve a home.html
-  });
+    logoutBtn.onclick = () => {
+        sessionStorage.clear(); // ¡IMPORTANTE! Esto borra los datos de acceso
+        window.location.href = "/home.html";
+    };
 }

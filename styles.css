@@ -400,3 +400,32 @@ textarea {
 .login-container button:hover {
   background: #1e40af;
 }
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+}
+
+.logout-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #cc0000;
+}
+
+.welcome-text {
+    margin-right: 15px;
+    font-weight: 500;
+    color: #333;
+}
