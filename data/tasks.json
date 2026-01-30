@@ -22,14 +22,14 @@
     "owner": "admin"
   },
   {
-    "id": "1769783167392",
-    "name": "Actividad 4",
-    "materia": "Geo",
+    "id": "1769786617143",
+    "name": "Actividad 1",
+    "materia": "Matematicas",
     "description": "",
-    "date": "2026-01-31",
-    "status": "completado",
-    "profesor": "Chespitito",
-    "hora": "23:59",
-    "owner": "admin"
+    "date": "2026-01-30",
+    "status": "pendiente",
+    "profesor": "",
+    "hora": "",
+    "owner": "Racoth"
   }
 ]
