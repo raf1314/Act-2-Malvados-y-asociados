@@ -307,4 +307,16 @@ function openModal(task = {}) {
             window.location.href = "/home.html";
         };
     }
+
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.classList.add("hidden");
+        }
+    };
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+            modal.classList.add("hidden");
+        }
+    });
 })();
