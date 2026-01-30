@@ -15,18 +15,34 @@ const SECRET_KEY = "tu_clave_secreta_super_segura";
 const DATA_FILE = path.join(__dirname, 'data/tasks.json');
 const USERS_FILE = path.join(__dirname, 'data/users.json');
 
+// --- MIDDLEWARES GLOBALES ---
 app.use(express.json());
 app.use(express.static(__dirname));
+
+app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        console.log(`[${new Date().toLocaleTimeString()}] ${req.method} ${req.url} - Status: ${res.statusCode} (${duration}ms)`);
+    });
+    next();
+});
 
 // --- MIDDLEWARE DE AUTENTICACIÓN ---
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
-    if (!token) return res.status(401).json({ error: "Acceso denegado" });
+    if (!token){
+        console.log("Intento de acceso sin token");
+        return res.status(401).json({ error: "Acceso denegado" });
+    }
 
     jwt.verify(token, SECRET_KEY, (err, user) => {
-        if (err) return res.status(403).json({ error: "Token inválido o expirado" });
+        if (err) {
+            console.log("Token inválido o expirado");
+            return res.status(403).json({ error: "Token inválido o expirado" });
+        }
         req.user = user; 
         next();
     });
@@ -44,10 +60,12 @@ app.post('/api/users', async (req, res) => {
         let users = [];
         try {
             const data = await fs.readFile(USERS_FILE, 'utf8');
+            console.log(`Nuevo usuario registrado: ${username}`);
             users = JSON.parse(data || '[]');
         } catch (e) { users = []; }
 
         if (users.find(u => u.username === username)) {
+            console.error("Error en registro:", error);
             return res.status(400).json({ error: 'El usuario ya existe' });
         }
 
@@ -64,10 +82,12 @@ app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
     try {
         const data = await fs.readFile(USERS_FILE, 'utf8');
+        console.log(`Login exitoso: ${username}`);
         const users = JSON.parse(data || '[]');
         const user = users.find(u => u.username === username);
 
         if (!user || !(await bcrypt.compare(password, user.password))) {
+            console.error("Error en login:", error);
             return res.status(400).json({ error: "Credenciales inválidas" });
         }
 
@@ -84,6 +104,7 @@ app.post('/api/login', async (req, res) => {
 app.get('/api/tasks', authenticateToken, async (req, res) => {
     try {
         const data = await fs.readFile(DATA_FILE, 'utf8');
+        console.log(`Enviando ${tasks.length} tareas a ${req.user.username}`);
         res.json(JSON.parse(data || '[]'));
     } catch (error) { res.json([]); }
 });
@@ -96,6 +117,7 @@ app.post('/api/tasks', authenticateToken, async (req, res) => {
         // Agregamos la nueva tarea (el front debe enviarla en el body)
         tasks.push(req.body); 
         await fs.writeFile(DATA_FILE, JSON.stringify(tasks, null, 2));
+        console.log(`Tarea creada por ${req.user.username}`);
         res.json({ success: true });
     } catch (error) { res.status(500).json({ error: 'Error al crear' }); }
 });
@@ -103,6 +125,7 @@ app.post('/api/tasks', authenticateToken, async (req, res) => {
 // 3. ACTUALIZAR TAREA (PUT)
 app.put('/api/tasks/:id', authenticateToken, async (req, res) => {
     try {
+        console.log(`Editando tarea ${req.params.id} (Usuario: ${req.user.username})`);
         const { id } = req.params;
         const data = await fs.readFile(DATA_FILE, 'utf8');
         let tasks = JSON.parse(data || '[]');
@@ -124,6 +147,7 @@ app.put('/api/tasks/:id', authenticateToken, async (req, res) => {
 // 4. ELIMINAR TAREA (DELETE)
 app.delete('/api/tasks/:id', authenticateToken, async (req, res) => {
     try {
+        console.log(`Eliminando tarea ${req.params.id} (Usuario: ${req.user.username})`);
         const { id } = req.params;
         const data = await fs.readFile(DATA_FILE, 'utf8');
         let tasks = JSON.parse(data || '[]');
@@ -142,4 +166,7 @@ app.delete('/api/tasks/:id', authenticateToken, async (req, res) => {
     } catch (error) { res.status(500).json({ error: 'Error al eliminar' }); }
 });
 
-app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
+app.listen(PORT, () =>  {
+    console.log(`\nServidor listo en http://localhost:${PORT}`);
+    console.log(`Monitoreando peticiones...\n` + "-".repeat(40));
+});

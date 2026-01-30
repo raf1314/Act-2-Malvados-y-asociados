@@ -1,16 +1,5 @@
 [
   {
-    "id": "1769783124405",
-    "name": "Actividad 1",
-    "materia": "Matematicas",
-    "description": "",
-    "date": "2026-01-30",
-    "status": "pendiente",
-    "profesor": "",
-    "hora": "",
-    "owner": "Luna"
-  },
-  {
     "id": "1769783154415",
     "name": "Act1 mate",
     "materia": "Matematicas",
@@ -31,5 +20,16 @@
     "profesor": "",
     "hora": "",
     "owner": "Racoth"
+  },
+  {
+    "id": "1769790882174",
+    "name": "Actividad 1",
+    "materia": "Matematicas",
+    "description": "",
+    "date": "2026-01-30",
+    "status": "pendiente",
+    "profesor": "",
+    "hora": "23:00",
+    "owner": "Luna"
   }
 ]
