@@ -66,8 +66,14 @@
 
                 <label>
                     Profesor
-                    <input type="text" id="taskProfesor" name="taskProfesor" placeholder="Ej. Profe Juan Pérez">
-                </label>            <!-- Profeosr -->
+                        <input 
+                        type="text" 
+                        id="taskProfesor"
+                        placeholder="Ej. Profe Juan Pérez"
+                        pattern="[A-Za-záéíóúÁÉÍÓÚñÑ ]+"
+                        title="Solo letras y espacios"
+                        >
+                </label>            <!-- Profeosr solo puede aceptar letras y espacios -->
 
                 <label>
                     Fecha de entrega
@@ -76,7 +82,7 @@
 
                 <label>
                     Hora de entrega
-                    <input type="time" id="taskHora"> <!-- Nuevo de horas -->
+                    <input type="time" id="taskHora" required> <!-- Nuevo de horas que es obligatorio -->
                 </label>
             </div>
 
