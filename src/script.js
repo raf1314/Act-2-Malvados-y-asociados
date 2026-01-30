@@ -173,8 +173,11 @@ class CalendarUI {
             if (this.expandedDay === dateStr) dayDiv.classList.add("expanded");
 
             dayDiv.innerHTML = `<span class="day-number">${day}</span>`;
-            dayDiv.onclick = () => openModal({ date: dateStr });
-
+            dayDiv.onclick = () => {
+                const today = new Date().toISOString().split("T")[0];
+                if (dateStr < today) return; //  Bloquea fechas pasadas
+                openModal({ date: dateStr });
+            };
             const dayTasks = filteredTasks.filter(t => t.date === dateStr);
             const isExpanded = this.expandedDay === dateStr;
             const tasksToShow = isExpanded ? dayTasks : dayTasks.slice(0, MAX_VISIBLE);
@@ -212,12 +215,24 @@ const modal = document.getElementById("taskModal");
 const form = document.getElementById("taskForm");
 const deleteBtn = document.getElementById("deleteTask");
 
+const taskDateInput = document.getElementById("taskDate"); // NUEVO
+function setMinDate() {
+    const today = new Date().toISOString().split("T")[0];
+    taskDateInput.min = today;
+}
+
+
 function openModal(task = {}) {
+    setMinDate();
+
     modal.classList.remove("hidden");
     const isEditing = !!task.id;
-    
+
     form.taskId.value = task.id || "";
     form.taskDate.value = task.date || "";
+
+    form.taskDate.readOnly = !isEditing; 
+
     form.taskMateria.value = task.materia || "";
     form.taskProfesor.value = task.profesor || "";
     form.taskHora.value = task.hora || "";
@@ -228,7 +243,6 @@ function openModal(task = {}) {
     deleteBtn.style.display = isEditing ? "inline-block" : "none";
 }
 
-modal.onclick = e => { if (e.target === modal) modal.classList.add("hidden"); };
 
 /* ========= INICIALIZACIÓN ESTRUCTURADA ========= */
 
