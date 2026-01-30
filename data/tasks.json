@@ -1,42 +1,35 @@
 [
   {
-    "id": "1769702476924",
-    "name": "Actividad 4",
-    "materia": "Ecologia",
+    "id": "1769783124405",
+    "name": "Actividad 1",
+    "materia": "Matematicas",
     "description": "",
     "date": "2026-01-30",
     "status": "pendiente",
     "profesor": "",
-    "hora": "21:00"
+    "hora": "",
+    "owner": "Luna"
   },
   {
-    "id": "1769702454777",
-    "name": "Tarea 25",
-    "materia": "Matematicas",
-    "description": "",
-    "date": "2026-01-29",
-    "status": "completado",
-    "profesor": "",
-    "hora": "23:00"
-  },
-  {
-    "id": "1769703832606",
+    "id": "1769783154415",
     "name": "Act1 mate",
     "materia": "Matematicas",
     "description": "",
     "date": "2026-01-31",
     "status": "pendiente",
     "profesor": "",
-    "hora": "20:35"
+    "hora": "",
+    "owner": "admin"
   },
   {
-    "id": "1769707199242",
-    "name": "Actividad 1",
-    "materia": "Matematicas",
+    "id": "1769783167392",
+    "name": "Actividad 4",
+    "materia": "Geo",
     "description": "",
-    "date": "2026-01-29",
-    "status": "pendiente",
+    "date": "2026-01-31",
+    "status": "completado",
     "profesor": "Chespitito",
-    "hora": "23:59"
+    "hora": "23:59",
+    "owner": "admin"
   }
 ]

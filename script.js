@@ -18,6 +18,7 @@ class Task {
         this.status = status;                  // Estado (pendiente, completado)
         this.profesor= profesor;               // Para agregar al profesor como campo (nuevo)
         this.hora=hora                         // Campo para agregar las horas (Nuevo)
+        this.owner = sessionStorage.getItem("currentUser"); // Propietario de la tarea
     }
 }
 
@@ -53,25 +54,33 @@ class TaskManager {
 
     // Guarda las tareas actuales en el servidor
     async save() {
-        const token = sessionStorage.getItem("token"); // Obtenemos el token guardado al loguearnos
+        const token = sessionStorage.getItem("token");
+        const currentUser = sessionStorage.getItem("currentUser");
 
         try {
+            // 1. Traemos TODAS las tareas que existen actualmente en el servidor
             const response = await fetch('/api/tasks', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const allTasks = await response.json();
+
+            // 2. Filtramos para quedarnos con las tareas que NO son nuestras
+            const otherUsersTasks = allTasks.filter(t => t.owner !== currentUser);
+
+            // 3. Unimos las de otros usuarios con nuestras tareas actuales (this.tasks)
+            const updatedTotal = [...otherUsersTasks, ...this.tasks];
+
+            // 4. Guardamos el total actualizado
+            await fetch('/api/tasks', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // <--- ESTO ES LO QUE FALTA
+                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify(this.tasks),
+                body: JSON.stringify(updatedTotal),
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Error del servidor:", errorData.error);
-                alert("No tienes permiso para guardar o tu sesión expiró.");
-            }
         } catch (error) {
-            console.error('Error al guardar las tareas:', error);
+            console.error('Error al sincronizar con el servidor:', error);
         }
     }
 

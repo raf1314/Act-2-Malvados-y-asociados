@@ -2,5 +2,9 @@
   {
     "username": "Luna",
     "password": "$2b$10$QW7JgZw/S9Nv6ZtQPrwIku1staAvulvwT.7YsLppAV/cjtlbnVrb2"
+  },
+  {
+    "username": "admin",
+    "password": "$2b$10$RB6Eoeol4flZPa9U0kjRLOk/Wz4CAOR5CZacZPACuO/5kNskbPFjG"
   }
 ]
